@@ -4,9 +4,10 @@ node thisScript.mjs <downloadedCoursePath>
 */
 
 import fs from 'fs'
+import dedup from '../../basic/dedup.mjs'
 import parseMemriseCourse from '../parsing/parseMemriseCourse.mjs'
 // import defaultParseLearnable from '../parsing/learnableParsers/default.mjs'
-// import parseLearnableAudioOnly from '../parsing/learnableParsers/singleAudio.mjs'
+import parseLearnableAudioOnly from '../parsing/learnableParsers/singleAudio.mjs'
 
 const coursePath = process.argv[2]
 
@@ -15,8 +16,12 @@ if (!fs.existsSync(coursePath)) {
     process.exit()
 }
 
-console.log(parseMemriseCourse(coursePath))
+// standard
+// console.log(JSON.stringify(parseMemriseCourse(coursePath)))
 
+// audio urls
+const mediaUrls = dedup(parseMemriseCourse(coursePath, parseLearnableAudioOnly).filter(a => a))
+console.log(mediaUrls.join('\n'))
 
 // example: custom parsing, detecting thai vowels from the course #102400
 // import readJSON from '../../basic/readJSON.mjs'
