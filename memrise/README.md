@@ -13,11 +13,15 @@ Works as of February 2022, though no guarantees for tommorrow.
 
 ## Usage Example
 ```sh
+# create dirs
+mkdir raw parsed media_urls media media/renamed
 # download 19 raw levels of the course #102400
 COOKIES='' node ./actions/downloadMemriseCourse.mjs 102400 19
 # parse it (see script file for details)
-node actions/parseDownloadedMemriseCourse.mjs
+node actions/parseDownloadedMemriseCourse.mjs ./raw/102400.json > parsed/102400.json
+node actions/parseDownloadedMemriseCourse.mjs ./raw/102400.json singleAudio > media_urls/102400.txt
 # download media
 node actions/downloadMediaFiles.mjs
 # rename downloaded media if required
+node actions/renameDownloadedMedia.mjs parsed/102400.json
 ```
