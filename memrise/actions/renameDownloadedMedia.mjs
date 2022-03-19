@@ -17,18 +17,27 @@ const fileExtFromPath = path => getStringLastPart(path, '.')
 
 const renameMedia = async (parsedPath) => {
 	const data = JSON.parse(fs.readFileSync(parsedPath))
+	const field = 'original' // 'translation'
 	data.map(record => {
 		// in case of a single audio
 		if (record.audio) {
 			const fileName = fileNameFromPath(record.audio)
 			const fileExt = fileExtFromPath(fileName)
 			const src = mediaPath + '/' + fileName
-			const dst = destinationPath + '/' + record.original + '.' + fileExt
+			const dst = destinationPath + '/' + record[field] + '.' + fileExt
 			if (fs.existsSync(dst)) {
-				console.log('ALREADY', record.original)
+				console.log('ALREADY', record[field])
 			} else {
-				fs.copyFileSync(src, dst)
-				console.log('COPIED', record.original)
+				if (fs.existsSync(src)) {
+					try {
+						fs.copyFileSync(src, dst)
+						console.log('COPIED', record[field])
+					} catch (e) {
+						console.error('ERROR', record, src, dst, e)
+					}
+				} else {
+					console.log('NOT FOUND', record[field], src)
+				}
 			}
 		}
 		// in case of many audios

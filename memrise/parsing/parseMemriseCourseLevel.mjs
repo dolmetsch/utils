@@ -4,8 +4,8 @@ export const parseMemriseCourseLevel = (
     jsonString,
     parseLearnable = defaultParseLearnable
 ) => {
-    const learnables = JSON.parse(jsonString).learnables
-    return learnables.map(parseLearnable)
+    const learnables = JSON.parse(jsonString)?.learnables
+    return learnables?.map(parseLearnable) || []
 }
 
 export default parseMemriseCourseLevel
