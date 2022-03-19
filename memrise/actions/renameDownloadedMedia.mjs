@@ -4,7 +4,7 @@ node thisScript.mjs <mediaListPath.txt> <saveToPath>
 */
 import fs from 'fs'
 
-const parsedPath = process.argv[2] // || './parsed'
+const parsedPath = process.argv[2] || './parsed'
 const mediaPath = process.argv[3] || './media'
 const destinationPath = process.argv[4] || './media/renamed'
 
@@ -16,7 +16,14 @@ const fileNameFromPath = path => getStringLastPart(path, '/')
 const fileExtFromPath = path => getStringLastPart(path, '.')
 
 const renameMedia = async (parsedPath) => {
-	const data = JSON.parse(fs.readFileSync(parsedPath))
+	let data = []
+	if (!fs.lstatSync(parsedPath).isDirectory() ) {
+		data = JSON.parse(fs.readFileSync(parsedPath))
+	} else {
+		fs.readdirSync(parsedPath).map(filePath => {
+			data = data.concat(JSON.parse(fs.readFileSync(parsedPath + '/' + filePath)))
+		})
+	}
 	const field = 'original' // 'translation'
 	const cleanFileName = fn => fn.replace('?', '')
 	data.map(record => {
