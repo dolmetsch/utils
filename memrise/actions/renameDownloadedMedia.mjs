@@ -18,13 +18,14 @@ const fileExtFromPath = path => getStringLastPart(path, '.')
 const renameMedia = async (parsedPath) => {
 	const data = JSON.parse(fs.readFileSync(parsedPath))
 	const field = 'original' // 'translation'
+	const cleanFileName = fn => fn.replace('?', '')
 	data.map(record => {
 		// in case of a single audio
 		if (record.audio) {
 			const fileName = fileNameFromPath(record.audio)
 			const fileExt = fileExtFromPath(fileName)
 			const src = mediaPath + '/' + fileName
-			const dst = destinationPath + '/' + record[field] + '.' + fileExt
+			const dst = destinationPath + '/' + cleanFileName(record[field]) + '.' + fileExt
 			if (fs.existsSync(dst)) {
 				console.log('ALREADY', record[field])
 			} else {
