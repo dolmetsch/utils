@@ -15,7 +15,9 @@ const makePathToStore = url => {
 }
 
 const downloadMedia = async (mediaListPath) => {
-    const urls = fs.readFileSync(mediaListPath).toString().split('\n').filter(a => a)
+    const urls = fs.readFileSync(mediaListPath)
+		.toString().split('\n').filter(a => a)
+		// .slice(2000, 2200) // debug
     let total = 0
     let failed = 0
     const failedUrls = []

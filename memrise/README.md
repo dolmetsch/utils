@@ -18,8 +18,8 @@ mkdir raw parsed media_urls media media/renamed
 # download 19 raw levels of the course #102400
 COOKIES='' node ./actions/downloadMemriseCourse.mjs 102400 19
 # parse it (see script file for details)
-node actions/parseDownloadedMemriseCourse.mjs ./raw/102400.json > parsed/102400.json
-node actions/parseDownloadedMemriseCourse.mjs ./raw/102400.json singleAudio > media_urls/102400.txt
+node actions/parseDownloadedMemriseCourse.mjs ./raw/102400 > parsed/102400.json
+node actions/parseDownloadedMemriseCourse.mjs ./raw/102400 singleAudio > media_urls/102400.txt
 # download media
 node actions/downloadMediaFiles.mjs
 # rename downloaded media if required
